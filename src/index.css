@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme {
+  --color-farm-green: #15803d;
+  --color-farm-leaf: #22c55e;
+  --color-farm-soil: #78350f;
+}
