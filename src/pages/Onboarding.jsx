@@ -181,7 +181,7 @@ export default function Onboarding() {
           };
         }
       } catch {
-        console.log('Geocoding failed, using default coordinates.');
+        // Keep Nairobi fallback coordinates
       }
 
       const farmTitle =
@@ -219,44 +219,6 @@ export default function Onboarding() {
       if (!userRes.ok) throw new Error('Failed to save farm profile');
       const updatedUser = await userRes.json();
 
-      const locationLabel = formData.county || formData.country;
-      const starterTasks = [
-        {
-          id: 'task-1',
-          title: `Verify ${locationLabel} weather alerts on your dashboard`,
-          completed: false,
-        },
-        {
-          id: 'task-2',
-          title: 'Register your first dairy cow, goat, or poultry flock',
-          completed: false,
-        },
-        ...(formData.growsCrops
-          ? [
-              {
-                id: 'task-3',
-                title: `Log your ${formData.cropAcres}-acre crop plot and planting season`,
-                completed: false,
-              },
-            ]
-          : []),
-        {
-          id: 'task-4',
-          title: 'Preview and print a sample farm receipt with your letterhead',
-          completed: false,
-        },
-      ];
-
-      await fetch(`${API_BASE}/checklists`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: savedUser.id,
-          farmTitle,
-          items: starterTasks,
-        }),
-      });
-
       localStorage.setItem(
         'shambasync_user',
         JSON.stringify({
@@ -269,7 +231,7 @@ export default function Onboarding() {
         })
       );
 
-      navigate('/checklist');
+      navigate('/dashboard');
     } catch (err) {
       console.error('Onboarding submit failed:', err);
       setError('Could not save your setup. Make sure "npm run server" is running on port 3001.');

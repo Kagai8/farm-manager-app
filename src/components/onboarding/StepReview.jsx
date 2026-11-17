@@ -11,7 +11,7 @@ export default function StepReview({ formData, onEditStep }) {
       <div>
         <h2 className="text-xl font-extrabold text-stone-900">4. Review & Confirm Setup</h2>
         <p className="mt-1 text-sm text-stone-600">
-          Check your farm profile below before saving and generating your setup checklist.
+          Check your farm profile below before saving and heading to your dashboard.
         </p>
       </div>
 

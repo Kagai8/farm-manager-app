@@ -104,35 +104,6 @@
       "details": "Size: 1.5 Acres | Planting Cycle: Short Rains"
     }
   ],
-  "checklists": [
-    {
-      "userId": "xGFzn-HK0y0",
-      "farmTitle": "Delmonte",
-      "items": [
-        {
-          "id": "task-1",
-          "title": "Verify Thika weather alerts on your dashboard",
-          "completed": true
-        },
-        {
-          "id": "task-2",
-          "title": "Register your first dairy cow, goat, or poultry flock",
-          "completed": true
-        },
-        {
-          "id": "task-3",
-          "title": "Log your 3-acre crop plot and planting season",
-          "completed": true
-        },
-        {
-          "id": "task-4",
-          "title": "Preview and print a sample farm receipt with your letterhead",
-          "completed": true
-        }
-      ],
-      "id": "YxRFGJ8xzb0"
-    }
-  ],
   "dropdownOptions": {
     "waterSources": [
       "Rain-fed",
