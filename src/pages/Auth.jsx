@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Sprout, ArrowLeft } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
 import AuthShowcase from '../components/auth/AuthShowcase';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
@@ -10,6 +11,7 @@ const API_URL = 'http://localhost:3001/users';
 export default function Auth() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const isRegister = location.pathname === '/register';
   const [users, setUsers] = useState([]);
@@ -32,11 +34,8 @@ export default function Auth() {
     fetchUsers();
   }, []);
 
-  
   useEffect(() => {
-    document.title = isRegister
-      ? 'Register Farm | ShambaSync'
-      : 'Log In | ShambaSync';
+    document.title = isRegister ? 'Register Farm | ShambaSync' : 'Log In | ShambaSync';
   }, [isRegister]);
 
   const switchMode = (registerMode) => {
@@ -44,21 +43,8 @@ export default function Auth() {
     navigate(registerMode ? '/register' : '/login', { replace: true });
   };
 
-  const saveSession = (user) => {
-    const sessionUser = {
-      id: user.id,
-      fullName: user.fullName,
-      email: user.email,
-      phone: user.phone,
-      hasOnboarded: user.hasOnboarded,
-      farmProfile: user.farmProfile,
-    };
-    localStorage.setItem('shambasync_user', JSON.stringify(sessionUser));
-  };
-
   const handleLogin = ({ email, password }) => {
     setError('');
-
     const matchedUser = users.find((u) => u.email.toLowerCase() === email);
 
     if (!matchedUser || matchedUser.password !== password) {
@@ -66,14 +52,14 @@ export default function Auth() {
       return;
     }
 
-    saveSession(matchedUser);
-    navigate(matchedUser.hasOnboarded ? '/dashboard' : '/onboarding');
+    login(matchedUser);
+    navigate(matchedUser.hasOnboarded ? `/farm/${matchedUser.id}` : '/onboarding/1');
   };
 
   const handleRegister = async ({ fullName, email, phone, password }) => {
     setError('');
-
     const emailExists = users.some((u) => u.email.toLowerCase() === email);
+
     if (emailExists) {
       setError('An account with this email already exists. Try logging in instead.');
       return;
@@ -101,8 +87,8 @@ export default function Auth() {
       const createdUser = await createRes.json();
 
       setUsers((prev) => [...prev, createdUser]);
-      saveSession(createdUser);
-      navigate('/onboarding');
+      login(createdUser);
+      navigate('/onboarding/1');
     } catch (err) {
       console.error('Registration failed:', err);
       setError('Cannot reach the database. Make sure "npm run server" is running on port 3001.');
@@ -117,7 +103,6 @@ export default function Auth() {
 
       <div className="flex w-full flex-col justify-center px-5 py-10 sm:px-10 lg:w-1/2 xl:px-16">
         <div className="mx-auto w-full max-w-md">
-          
           <div className="mb-8 flex items-center justify-between">
             <Link
               to="/"
@@ -132,6 +117,7 @@ export default function Auth() {
               <span>ShambaSync</span>
             </div>
           </div>
+
           {isRegister ? (
             <RegisterForm
               onRegister={handleRegister}

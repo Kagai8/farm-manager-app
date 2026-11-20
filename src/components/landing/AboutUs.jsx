@@ -3,7 +3,7 @@ import farmerImage from '../../assets/images/farmer.jpeg';
 
 const HIGHLIGHTS = [
   'Three Universal Asset Trackers: Manage Individual tagged livestock, Poultry batches, and Crop plots in one standardized system.',
-  'Weather, Analytics & Printouts: Pair county-level weather forecasts and cost-to-yield tracking with printout-ready receipts and health records.',
+  'Weather, Analytics & Printouts: Pair county-level weather forecasts and cost-to-yield tracking with printout-ready reports and health records.',
   'Built for Farms: Lightweight, mobile-first interface tailored to local counties, acreage tracking and workflows.',
 ];
 
@@ -37,7 +37,7 @@ export default function AboutUs() {
             ShambaSync is a unified farm operations platform built specifically for  diverse agricultural landscape.<br />
 
             Designed to replace scattered notebooks and guesswork, ShambaSync digitizes your entire farm lifecycle—from birth, 
-            hatching, and planting through daily inputs, health events, and harvests. By turning raw field activity into clear 
+            hatching, and planting through daily inputs, health events and harvests. By turning raw field activity into clear 
             analytics and timely alerts, it empowers farmers to reduce waste and make profitable decisions.
           </p>
 

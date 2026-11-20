@@ -160,7 +160,7 @@ export default function RegisterForm({ onRegister, loading, error, onSwitchToLog
         </button>
       </form>
 
-      {/* Spotify-style bottom switch */}
+      
       <div className="mt-8 border-t border-stone-200 pt-6 text-center">
         <p className="text-sm text-stone-600">
           Already have an account?{' '}

@@ -1,9 +1,48 @@
 {
   "users": [
     {
+      "fullName": "Test User",
+      "email": "testuser@gmail.com",
+      "phone": "0722345677",
+      "password": "Njoroge@88",
+      "hasOnboarded": true,
+      "farmProfile": {
+        "farmName": "",
+        "farmTitle": "Test's Shamba",
+        "ownerName": "Test User",
+        "country": "Kenya",
+        "county": "Kiambu County",
+        "subCounty": "Banana",
+        "coordinates": {
+          "latitude": -24.46883,
+          "longitude": 150.13492
+        },
+        "totalAcres": 0.5,
+        "waterSource": "Borehole",
+        "growsCrops": true,
+        "cropAcres": 0.2,
+        "letterhead": {
+          "businessHeader": "Test's Shamba",
+          "taglineAddress": "Banana, Kiambu County, Kenya",
+          "contactPhone": "0722345677",
+          "contactEmail": "testuser@gmail.com"
+        }
+      },
+      "id": "v9hGRoaEJDE"
+    },
+    {
+      "fullName": "New Test User",
+      "email": "newtestuser@gmail.com",
+      "phone": "0720000000",
+      "password": "password",
+      "hasOnboarded": false,
+      "farmProfile": null,
+      "id": "N3VBP4E2vmQ"
+    },
+    {
       "fullName": "Quincy Kagai",
       "email": "quincy.kagai@student.moringaschool.com",
-      "phone": "0722345678",
+      "phone": "quincy.kagai@student.moringaschool.com",
       "password": "Njoroge@88",
       "hasOnboarded": true,
       "farmProfile": {
@@ -11,35 +50,24 @@
         "farmTitle": "Delmonte",
         "ownerName": "Quincy Kagai",
         "country": "Kenya",
-        "county": "Nairobi",
-        "subCounty": "Dagoretti South",
-        "nearestTown": "Thika",
+        "county": "Kiambu County",
+        "subCounty": "Banana",
         "coordinates": {
-          "latitude": -1.03326,
-          "longitude": 37.06933
+          "latitude": -24.46883,
+          "longitude": 150.13492
         },
-        "totalAcres": 3,
+        "totalAcres": 5,
         "waterSource": "Borehole",
-        "yieldUnit": "KES",
-        "growsCrops": true,
-        "cropAcres": 3,
+        "growsCrops": false,
+        "cropAcres": 0,
         "letterhead": {
-          "businessHeader": "Delmonte",
-          "taglineAddress": "Thika, Nairobi, Kenya",
-          "contactPhone": "0722345678",
+          "businessHeader": "Delmonte Enterprises",
+          "taglineAddress": "P.O BOX 22345-00603. Kiambu",
+          "contactPhone": "0722678456",
           "contactEmail": "quincy.kagai@student.moringaschool.com"
         }
       },
-      "id": "xGFzn-HK0y0"
-    },
-    {
-      "fullName": "Test User",
-      "email": "testuser@gmail.com",
-      "phone": "0722345677",
-      "password": "Njoroge@88",
-      "hasOnboarded": false,
-      "farmProfile": null,
-      "id": "v9hGRoaEJDE"
+      "id": "Ja6AEfSzQh4"
     }
   ],
   "assets": [

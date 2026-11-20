@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import ErrorAlert from '../components/common/ErrorAlert';
 import OnboardingHeader from '../components/onboarding/OnboardingHeader';
 import OnboardingFooter from '../components/onboarding/OnboardingFooter';
@@ -32,35 +33,36 @@ const FALLBACK_COUNTRIES = [
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const [savedUser] = useState(() => JSON.parse(localStorage.getItem('shambasync_user') || 'null'));
+  const { step } = useParams();
+  const { user, updateUser } = useContext(AuthContext);
 
-  const [step, setStep] = useState(1);
+  const currentStep = Math.min(Math.max(Number(step) || 1, 1), 4);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [waterSources, setWaterSources] = useState(['Borehole', 'River / Stream', 'Rainwater Harvesting']);
   const [countryList, setCountryList] = useState(FALLBACK_COUNTRIES);
 
   const [formData, setFormData] = useState({
-    farmName: '',
-    ownerName: savedUser?.fullName || '',
-    country: 'Kenya',
-    county: 'Kiambu County',
-    subCounty: '',
-    totalAcres: '',
-    waterSource: 'Borehole',
-    growsCrops: null,
-    cropAcres: '',
-    businessHeader: '',
-    taglineAddress: '',
-    contactPhone: savedUser?.phone || '',
-    contactEmail: savedUser?.email || '',
+    farmName: user?.farmProfile?.farmName || '',
+    ownerName: user?.fullName || '',
+    country: user?.farmProfile?.country || 'Kenya',
+    county: user?.farmProfile?.county || 'Kiambu County',
+    subCounty: user?.farmProfile?.subCounty || '',
+    totalAcres: user?.farmProfile?.totalAcres || '',
+    waterSource: user?.farmProfile?.waterSource || 'Borehole',
+    growsCrops: user?.farmProfile?.growsCrops ?? null,
+    cropAcres: user?.farmProfile?.cropAcres || '',
+    businessHeader: user?.farmProfile?.letterhead?.businessHeader || '',
+    taglineAddress: user?.farmProfile?.letterhead?.taglineAddress || '',
+    contactPhone: user?.farmProfile?.letterhead?.contactPhone || user?.phone || '',
+    contactEmail: user?.farmProfile?.letterhead?.contactEmail || user?.email || '',
   });
 
   useEffect(() => {
-    if (!savedUser) {
+    if (!user) {
       navigate('/login', { replace: true });
     }
-  }, [savedUser, navigate]);
+  }, [user, navigate]);
 
   useEffect(() => {
     const loadDropdowns = async () => {
@@ -118,20 +120,20 @@ export default function Onboarding() {
       ...prev,
       businessHeader: title,
       taglineAddress: [prev.subCounty, prev.county, prev.country].filter(Boolean).join(', '),
-      contactPhone: prev.contactPhone || savedUser?.phone || '',
-      contactEmail: prev.contactEmail || savedUser?.email || '',
+      contactPhone: prev.contactPhone || user?.phone || '',
+      contactEmail: prev.contactEmail || user?.email || '',
     }));
   };
 
   const validateStep = () => {
-    if (step === 1) {
+    if (currentStep === 1) {
       if (!formData.ownerName.trim()) return 'Please enter the farm owner name.';
       if (!formData.totalAcres || Number(formData.totalAcres) <= 0) {
         return 'Please enter a valid total farm size in acres.';
       }
     }
 
-    if (step === 2) {
+    if (currentStep === 2) {
       if (formData.growsCrops === null) {
         return 'Please select whether you grow crops on this farm.';
       }
@@ -154,11 +156,11 @@ export default function Onboarding() {
       return;
     }
     setError('');
-    setStep((prev) => Math.min(prev + 1, 4));
+    navigate(`/onboarding/${Math.min(currentStep + 1, 4)}`);
   };
 
   const handleConfirmSetup = async () => {
-    if (!savedUser) return;
+    if (!user) return;
     setSubmitting(true);
     setError('');
 
@@ -210,7 +212,7 @@ export default function Onboarding() {
         },
       };
 
-      const userRes = await fetch(`${API_BASE}/users/${savedUser.id}`, {
+      const userRes = await fetch(`${API_BASE}/users/${user.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hasOnboarded: true, farmProfile }),
@@ -219,19 +221,8 @@ export default function Onboarding() {
       if (!userRes.ok) throw new Error('Failed to save farm profile');
       const updatedUser = await userRes.json();
 
-      localStorage.setItem(
-        'shambasync_user',
-        JSON.stringify({
-          id: updatedUser.id,
-          fullName: updatedUser.fullName,
-          email: updatedUser.email,
-          phone: updatedUser.phone,
-          hasOnboarded: true,
-          farmProfile: updatedUser.farmProfile,
-        })
-      );
-
-      navigate('/dashboard');
+      updateUser(updatedUser);
+      navigate(`/farm/${updatedUser.id}`);
     } catch (err) {
       console.error('Onboarding submit failed:', err);
       setError('Could not save your setup. Make sure "npm run server" is running on port 3001.');
@@ -243,12 +234,12 @@ export default function Onboarding() {
   return (
     <div className="min-h-screen bg-stone-50 px-4 py-8 sm:px-6">
       <div className="mx-auto max-w-2xl">
-        <OnboardingHeader step={step} />
+        <OnboardingHeader step={currentStep} />
 
         <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-xs sm:p-8">
           <ErrorAlert message={error} />
 
-          {step === 1 && (
+          {currentStep === 1 && (
             <StepFarmBasics
               formData={formData}
               onChange={handleChange}
@@ -258,9 +249,9 @@ export default function Onboarding() {
             />
           )}
 
-          {step === 2 && <StepCropCheck formData={formData} onUpdate={handleUpdate} />}
+          {currentStep === 2 && <StepCropCheck formData={formData} onUpdate={handleUpdate} />}
 
-          {step === 3 && (
+          {currentStep === 3 && (
             <StepLetterhead
               formData={formData}
               onChange={handleChange}
@@ -268,14 +259,19 @@ export default function Onboarding() {
             />
           )}
 
-          {step === 4 && <StepReview formData={formData} onEditStep={setStep} />}
+          {currentStep === 4 && (
+            <StepReview
+              formData={formData}
+              onEditStep={(targetStep) => navigate(`/onboarding/${targetStep}`)}
+            />
+          )}
 
           <OnboardingFooter
-            step={step}
+            step={currentStep}
             submitting={submitting}
             onBack={() => {
               setError('');
-              setStep((prev) => prev - 1);
+              navigate(`/onboarding/${currentStep - 1}`);
             }}
             onNext={handleNext}
             onConfirm={handleConfirmSetup}

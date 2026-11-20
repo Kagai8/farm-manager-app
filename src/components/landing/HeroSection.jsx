@@ -18,7 +18,7 @@ export default function HeroSection() {
       />
 
       
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/90 via-emerald-950/35 to-emerald-950/90 lg:bg-gradient-to-r lg:from-emerald-950/92 lg:via-emerald-950/55 lg:to-emerald-950/40" />
+      <div className="absolute inset-0 bg-linear-to-b from-emerald-950/90 via-emerald-950/35 to-emerald-950/90 lg:bg-gradient-to-r lg:from-emerald-950/92 lg:via-emerald-950/55 lg:to-emerald-950/40" />
 
       
       <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pt-28 sm:px-6 lg:px-8 lg:pt-36">
@@ -80,7 +80,7 @@ export default function HeroSection() {
             href="#how-it-works"
             className="inline-flex items-center gap-1.5 py-1 text-xs font-semibold text-emerald-200 hover:text-white lg:hidden"
           >
-            <span>Learn More</span>
+            <span>How does it work?</span>
             <ArrowDown className="h-3.5 w-3.5" />
           </a>
         </div>

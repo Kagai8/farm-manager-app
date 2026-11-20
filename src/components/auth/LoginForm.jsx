@@ -17,7 +17,7 @@ export default function LoginForm({ onLogin, loading, error, onSwitchToRegister 
         Log in to ShambaSync
       </h1>
       <p className="mt-1.5 text-sm text-stone-600">
-        Enter your credentials to access your farm dashboard and records.
+        Enter your credentials to access your farm workflow.
       </p>
 
       {error && (
@@ -77,7 +77,6 @@ export default function LoginForm({ onLogin, loading, error, onSwitchToRegister 
         </button>
       </form>
 
-      {/* Spotify-style bottom switch */}
       <div className="mt-8 border-t border-stone-200 pt-6 text-center">
         <p className="text-sm text-stone-600">
           Don&apos;t have an account?{' '}

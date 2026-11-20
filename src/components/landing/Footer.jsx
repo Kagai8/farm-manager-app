@@ -8,7 +8,7 @@ export default function Footer() {
           <Sprout className="h-5 w-5 text-emerald-300" />
           <span>ShambaSync &copy; 2026</span>
         </p>
-        <p className="mt-1 text-xs text-emerald-200/80">Built for Kenyan Agriculture</p>
+        <p className="mt-1 text-xs text-emerald-200/80">Built for Futuristic Agriculture</p>
       </div>
     </footer>
   );
